@@ -12,9 +12,19 @@ public class Item {
     private String name;
     private BigDecimal price;
 
+    /**
+     * Constructor.
+     */
     public Item() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param id    The Item's {@code id} to set
+     * @param name  The Item's {@code name} to set
+     * @param price The Item's {@code price} to set
+     */
     public Item(Long id, String name, BigDecimal price) {
         this.id = id;
         this.name = name;
