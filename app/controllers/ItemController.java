@@ -1,4 +1,10 @@
 package controllers;
 
-public class ItemController {
+import play.mvc.*;
+
+public class ItemController extends Controller {
+
+    public Result view() {
+        return ok("addresses");
+    }
 }
