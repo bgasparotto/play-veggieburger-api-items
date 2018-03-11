@@ -2,8 +2,7 @@ package models.persistence;
 
 import models.model.Item;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +14,14 @@ public class CollectionItemRepository implements ItemRepository {
 
     public CollectionItemRepository() {
         items = new ArrayList<>();
+        items.add(new Item(1l, "Small Veggie Burger", new BigDecimal(7)));
+        items.add(new Item(2l, "Medium Veggie Burger", new BigDecimal(9)));
+        items.add(new Item(3l, "Large Veggie Burger", new BigDecimal(11)));
     }
 
     @Override
     public Item findOne(Long id) {
-        return items.stream().filter(i -> i.getId() == id).findFirst().get();
+        return items.stream().filter(i -> i.getId() == id).findFirst().orElse(null);
     }
 
     @Override
@@ -57,5 +59,10 @@ public class CollectionItemRepository implements ItemRepository {
     @Override
     public void delete(Item item) {
         items.remove(item);
+    }
+
+    @Override
+    public void clear() {
+        items.clear();
     }
 }

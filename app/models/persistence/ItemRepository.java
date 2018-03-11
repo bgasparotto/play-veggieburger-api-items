@@ -22,4 +22,6 @@ public interface ItemRepository {
     void delete(Long id);
 
     void delete(Item item);
+
+    void clear();
 }
