@@ -1,6 +1,7 @@
 package models.model;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * Class that represents and Item resource of the system.
@@ -93,5 +94,20 @@ public class Item {
         sb.append(", price=").append(price);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return Objects.equals(id, item.id) &&
+                Objects.equals(name, item.name) &&
+                Objects.equals(price, item.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price);
     }
 }
