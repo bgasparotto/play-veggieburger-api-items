@@ -7,3 +7,16 @@ GET     /                           controllers.HomeController.index
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+# Map the REST API for the Item resource
+GET     /api/items                  controllers.ItemController.list
+GET     /api/items/:id              controllers.ItemController.view(id: Long)
+
+POST    /api/items                  controllers.ItemController.create
+
+PUT     /api/items/:id              controllers.ItemController.update(id: Long)
+
+PATCH   /api/items/:id              controllers.ItemController.modify(id: Long)
+
+DELETE  /api/items/:id              controllers.ItemController.remove(id: Long)
+DELETE  /api/items                  controllers.ItemController.removeAll
