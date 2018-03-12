@@ -9,6 +9,10 @@ scalaVersion := "2.12.4"
 
 libraryDependencies += guice
 
+libraryDependencies += javaJdbc
+
+libraryDependencies += "com.h2database" % "h2" % "1.4.192"
+
 libraryDependencies ++= Seq(
   "org.jooq" % "jooq" % "3.10.5",
   "org.jooq" % "jooq-meta" % "3.10.5",
