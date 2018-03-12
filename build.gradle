@@ -25,6 +25,10 @@ dependencies {
     play "com.typesafe.play:play-guice_$scalaVersion:$playVersion"
     play "com.typesafe.play:play-logback_$scalaVersion:$playVersion"
     play "com.typesafe.play:filters-helpers_$scalaVersion:$playVersion"
+
+    play "org.jooq:jooq:3.10.5"
+    play "org.jooq:jooq-meta:3.10.5"
+    play "org.jooq:jooq-codegen:3.10.5"
 }
 
 repositories {
