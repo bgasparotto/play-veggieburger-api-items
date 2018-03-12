@@ -1,6 +1,7 @@
 package models.persistence;
 
 import models.model.Item;
+import models.persistence.jooq.generated.Tables;
 import play.db.Database;
 
 import javax.inject.Inject;
@@ -20,7 +21,8 @@ public class JooqItemRepository extends JooqRepository implements ItemRepository
 
     @Override
     public List<Item> findAll() {
-        return null;
+        List<Item> all = create().selectFrom(Tables.ITEM).fetch().into(Item.class);
+        return all;
     }
 
     @Override
