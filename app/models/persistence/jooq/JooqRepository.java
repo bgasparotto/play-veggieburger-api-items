@@ -1,13 +1,11 @@
-package models.persistence;
+package models.persistence.jooq;
 
-import models.persistence.jooq.PlayConnectionProvider;
 import org.jooq.ConnectionProvider;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import play.db.Database;
 
-import java.sql.Connection;
 import java.util.Objects;
 
 /**

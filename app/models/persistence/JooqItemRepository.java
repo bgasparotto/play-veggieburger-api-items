@@ -1,6 +1,7 @@
 package models.persistence;
 
 import models.model.Item;
+import models.persistence.jooq.JooqRepository;
 import models.persistence.jooq.generated.tables.records.ItemRecord;
 import play.db.Database;
 
