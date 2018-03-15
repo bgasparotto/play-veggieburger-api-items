@@ -1,6 +1,4 @@
-package com.bgasparotto.archproject.persistence.dbunit;
-
-import java.io.FileInputStream;
+package models.persistence.dbunit;
 
 import org.dbunit.DBTestCase;
 import org.dbunit.PropertiesBasedJdbcDatabaseTester;
@@ -8,7 +6,9 @@ import org.dbunit.database.DatabaseConfig;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.ext.h2.H2DataTypeFactory;
+import org.dbunit.ext.postgresql.PostgresqlDataTypeFactory;
+
+import java.io.FileInputStream;
 
 /**
  * Abstract test case class for {@code DbUnit}. This class should be extended
@@ -63,6 +63,6 @@ public abstract class DbUnitTestCase extends DBTestCase {
 
 		/* Set the datatype for H2. */
 		config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
-				new H2DataTypeFactory());
+				new PostgresqlDataTypeFactory());
 	}
 }

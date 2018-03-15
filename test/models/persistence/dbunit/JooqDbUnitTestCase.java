@@ -1,4 +1,4 @@
 package models.persistence.dbunit;
 
-public class JooqDbUnitTestCase {
+public class JooqDbUnitTestCase extends DbUnitTestCase {
 }
