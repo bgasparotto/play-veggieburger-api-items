@@ -19,8 +19,10 @@ public class JooqItemRepository extends JooqRepository implements ItemRepository
 
     @Override
     public Item findOne(Long id) {
-        Item item = create().selectFrom(ITEM).where(ITEM.ID.eq(id))
-                .fetchOne().into(Item.class);
+        Item item = create().selectFrom(ITEM)
+                .where(ITEM.ID.eq(id))
+                .fetchOneInto(Item.class);
+
         return item;
     }
 
