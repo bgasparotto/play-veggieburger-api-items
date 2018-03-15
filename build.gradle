@@ -31,6 +31,9 @@ dependencies {
     play "org.jooq:jooq:3.10.5"
     play "org.jooq:jooq-meta:3.10.5"
     play "org.jooq:jooq-codegen:3.10.5"
+
+    /* DbUnit for persitence unit testing. */
+    testCompile 'org.dbunit:dbunit:2.5.4'
 }
 
 repositories {

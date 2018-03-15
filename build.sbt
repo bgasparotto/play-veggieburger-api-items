@@ -18,3 +18,6 @@ libraryDependencies ++= Seq(
   "org.jooq" % "jooq-meta" % "3.10.5",
   "org.jooq" % "jooq-codegen" % "3.10.5"
 )
+
+// DbUnit for persitence unit testing.
+libraryDependencies += "org.dbunit" % "dbunit" % "2.5.4" % "test"
