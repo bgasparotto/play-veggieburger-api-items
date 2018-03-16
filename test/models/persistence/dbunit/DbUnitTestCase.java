@@ -15,6 +15,7 @@ import java.io.FileInputStream;
  * from classes willing to perform persistence tests.
  * 
  * @author Bruno Gasparotto
+ *
  */
 public abstract class DbUnitTestCase extends DBTestCase {
 
