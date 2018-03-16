@@ -17,11 +17,30 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
         super.setUp();
     }
 
-    public void testFindOne() {
+    public void testShouldFindOne() {
         Item item = repository.findOne(1L);
         Assert.assertNotNull(item);
         Assert.assertEquals(1L, item.getId().longValue());
     }
+
+    public void testShouldFindNullOnFindOnePassingNull() {
+        Item item = repository.findOne(null);
+        Assert.assertNull(item);
+    }
+
+    public void testShouldFindNullForNonExistingPositiveId() {
+        Item item = repository.findOne(100L);
+        Assert.assertNull(item);
+    }
+
+    public void testShouldFindNullForNegativeAndZeroIds() {
+        Item forZero = repository.findOne(0L);
+        Assert.assertNull(forZero);
+
+        Item forMinusOne = repository.findOne(-1L);
+        Assert.assertNull(forMinusOne);
+    }
+
     public void testFindAll() {
         List<Item> items = repository.findAll();
         Assert.assertEquals(5, items.size());
