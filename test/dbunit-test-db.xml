@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-	<item id="1" name="Original Veggie Burger" price="10"/>
-	<item id="2" name="Small Veggie Burger" price="9"/>
-	<item id="3" name="Medium Veggie Burger" price="11"/>
-	<item id="4" name="Big Veggie Burger" price="13"/>
-	<item id="5" name="Family Veggie Burger" price="18"/>
+	<PUBLIC.item id="1" name="Original Veggie Burger" price="10"/>
+	<PUBLIC.item id="2" name="Small Veggie Burger" price="9"/>
+	<PUBLIC.item id="3" name="Medium Veggie Burger" price="11"/>
+	<PUBLIC.item id="4" name="Big Veggie Burger" price="13"/>
+	<PUBLIC.item id="5" name="Family Veggie Burger" price="18"/>
 </dataset>
