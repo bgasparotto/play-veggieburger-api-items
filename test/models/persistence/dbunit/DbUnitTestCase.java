@@ -15,18 +15,12 @@ import java.io.FileInputStream;
  * from classes willing to perform persistence tests.
  * 
  * @author Bruno Gasparotto
- *
  */
 public abstract class DbUnitTestCase extends DBTestCase {
 
 	/**
-	 * <p>
-	 * Constructor.
-	 * </p>
-	 * <p>
 	 * The needed system properties for DbUnit test operations are configured by
 	 * this constructor.
-	 * </p>
 	 */
 	public DbUnitTestCase() {
 		System.setProperty(
