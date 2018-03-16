@@ -32,12 +32,7 @@ public enum DbUnitParameters {
 	 * Path of the {@code xml} file containing the data to be used on persitence
 	 * tests by {@code DbUnit}.
 	 */
-	FLAX_XML_FILE("test/dbunit-test-db.xml"),
-
-	/**
-	 * The persistence unit to be used on test context.
-	 */
-	PERSISTENCE_UNIT("archproject-local");
+	FLAX_XML_FILE("test/dbunit-test-db.xml");
 
 	private final String value;
 
