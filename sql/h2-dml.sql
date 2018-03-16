@@ -1,4 +1,4 @@
-INSERT INTO item
+INSERT INTO ITEM
 (ID, NAME, PRICE)
 VALUES
 (1, 'Original Veggie Burger', 10),
