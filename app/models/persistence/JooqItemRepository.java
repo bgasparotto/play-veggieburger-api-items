@@ -65,7 +65,7 @@ public class JooqItemRepository extends JooqRepository implements ItemRepository
     }
 
     @Override
-    public void clear() {
+    public void deleteAll() {
         create().delete(ITEM).execute();
     }
 }

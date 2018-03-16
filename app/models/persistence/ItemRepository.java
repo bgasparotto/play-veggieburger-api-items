@@ -23,5 +23,5 @@ public interface ItemRepository {
 
     void delete(Item item);
 
-    void clear();
+    void deleteAll();
 }
