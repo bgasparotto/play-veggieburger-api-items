@@ -1,69 +1,80 @@
 package models.persistence;
 
 import models.model.Item;
-import models.persistence.dbunit.DbUnitParameters;
-import models.persistence.dbunit.DbUnitTestCase;
-import org.junit.After;
+import models.persistence.dbunit.PlayDbUnitTestCase;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
-import play.db.Database;
-import play.db.Databases;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.List;
 
-public class JooqItemRepositoryTest extends DbUnitTestCase {
+public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
     private ItemRepository repository;
 
     @Before
     public void setUp() throws Exception {
-        String driver = DbUnitParameters.DRIVER_CLASS.getValue();
-        String url = DbUnitParameters.CONNECTION_URL.getValue();
-        String username = DbUnitParameters.USERNAME.getValue();
-        String password = DbUnitParameters.PASSWORD.getValue();
-
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("username", username);
-        parameters.put("password", password);
-
-        Database database = Databases.createFrom(driver, url, parameters);
-        repository = new JooqItemRepository(database);
-
+        repository = new JooqItemRepository(getDatabase());
         super.setUp();
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
-    @Test
     public void testFindOne() {
         Item item = repository.findOne(1L);
         Assert.assertNotNull(item);
+        Assert.assertEquals(1L, item.getId().longValue());
+    }
+    public void testFindAll() {
+        List<Item> items = repository.findAll();
+        Assert.assertEquals(5, items.size());
     }
 
-    @Test
-    public void findAll() {
+    public void testInsert() {
+        Item item = new Item(null, "New Burger", new BigDecimal(9));
+        Long insertedId = repository.insert(item);
+        Assert.assertEquals(6L, insertedId.longValue());
+
+        List<Item> items = repository.findAll();
+        Assert.assertEquals(6, items.size());
     }
 
-    @Test
-    public void insert() {
+    public void testUpdate() {
+        Long updatingId = 1L;
+        String newName = "New Expensive Burger";
+        BigDecimal newPrice = new BigDecimal(99.00);
+        Item item = new Item(updatingId, newName, newPrice);
+        repository.update(item);
+
+        Item updated = repository.findOne(updatingId);
+        Assert.assertEquals(newName, updated.getName());
+        Assert.assertEquals(newPrice.doubleValue(), updated.getPrice().doubleValue(), 2);
     }
 
-    @Test
-    public void update() {
+    public void testDeleteById() {
+        Long deletingId = 5L;
+        repository.delete(deletingId);
+
+        Item item = repository.findOne(deletingId);
+        Assert.assertNull(item);
+
+        List<Item> items = repository.findAll();
+        Assert.assertEquals(4, items.size());
     }
 
-    @Test
-    public void delete() {
+    public void testDeleteItem() {
+        Long deletingId = 5L;
+        Item deletingItem = new Item();
+        deletingItem.setId(deletingId);
+        repository.delete(deletingItem);
+
+        Item item = repository.findOne(deletingId);
+        Assert.assertNull(item);
+
+        List<Item> items = repository.findAll();
+        Assert.assertEquals(4, items.size());
     }
 
-    @Test
-    public void delete1() {
-    }
-
-    @Test
-    public void clear() {
+    public void testClear() {
+        repository.deleteAll();
+        List<Item> items = repository.findAll();
+        Assert.assertEquals(0, items.size());
     }
 }
