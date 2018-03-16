@@ -41,12 +41,20 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
         Assert.assertNull(forMinusOne);
     }
 
-    public void testFindAll() {
+    public void testShouldFindAll() {
         List<Item> items = repository.findAll();
         Assert.assertEquals(5, items.size());
     }
 
-    public void testInsert() {
+    public void testShouldFindEmptyListWhenNoRecords() {
+        repository.deleteAll();
+        List<Item> items = repository.findAll();
+
+        Assert.assertNotNull(items);
+        Assert.assertEquals(0, items.size());
+    }
+
+    public void testShouldInsert() {
         Item item = new Item(null, "New Burger", new BigDecimal(9));
         Long insertedId = repository.insert(item);
         Assert.assertEquals(6L, insertedId.longValue());
@@ -55,7 +63,7 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
         Assert.assertEquals(6, items.size());
     }
 
-    public void testUpdate() {
+    public void testShouldUpdate() {
         Long updatingId = 1L;
         String newName = "New Expensive Burger";
         BigDecimal newPrice = new BigDecimal(99.00);
@@ -67,7 +75,7 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
         Assert.assertEquals(newPrice.doubleValue(), updated.getPrice().doubleValue(), 2);
     }
 
-    public void testDeleteById() {
+    public void testShouldDeleteById() {
         Long deletingId = 5L;
         repository.delete(deletingId);
 
@@ -78,7 +86,7 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
         Assert.assertEquals(4, items.size());
     }
 
-    public void testDeleteItem() {
+    public void testShouldDeleteItem() {
         Long deletingId = 5L;
         Item deletingItem = new Item();
         deletingItem.setId(deletingId);
@@ -91,7 +99,7 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
         Assert.assertEquals(4, items.size());
     }
 
-    public void testClear() {
+    public void testShouldDeleteAll() {
         repository.deleteAll();
         List<Item> items = repository.findAll();
         Assert.assertEquals(0, items.size());
