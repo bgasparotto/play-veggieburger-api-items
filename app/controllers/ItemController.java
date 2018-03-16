@@ -57,8 +57,8 @@ public class ItemController extends Controller {
         Item item = Json.fromJson(json, Item.class);
         Item existing = repository.findOne(id);
 
-        Optional.ofNullable(item.getName()).ifPresent(s -> existing.setName(s));
-        Optional.ofNullable(item.getPrice()).ifPresent(p -> existing.setPrice(p));
+        Optional.ofNullable(item.getName()).ifPresent(existing::setName);
+        Optional.ofNullable(item.getPrice()).ifPresent(existing::setPrice);
 
         Item updated = repository.update(existing);
         return ok(Json.toJson(updated));
@@ -70,7 +70,7 @@ public class ItemController extends Controller {
     }
 
     public Result removeAll() {
-        repository.clear();
+        repository.deleteAll();
         return ok();
     }
 }
