@@ -33,14 +33,16 @@ public class JooqItemRepository extends JooqRepository implements ItemRepository
     }
 
     @Override
-    public Long insert(Item item) {
+    public Item insert(Item item) {
         ItemRecord record = create().insertInto(ITEM, ITEM.NAME, ITEM.PRICE)
                 .values(item.getName(), item.getPrice())
                 .returning(ITEM.ID)
                 .fetchOne();
-        Long id = record.getId();
 
-        return id;
+        Long id = record.getId();
+        item.setId(id);
+
+        return item;
     }
 
     @Override

@@ -56,8 +56,8 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
 
     public void testShouldInsert() {
         Item item = new Item(null, "New Burger", new BigDecimal(9));
-        Long insertedId = repository.insert(item);
-        Assert.assertEquals(6L, insertedId.longValue());
+        Item createdItem = repository.insert(item);
+        Assert.assertEquals(6L, createdItem.getId().longValue());
 
         List<Item> items = repository.findAll();
         Assert.assertEquals(6, items.size());

@@ -15,7 +15,7 @@ public interface ItemRepository {
 
     List<Item> findAll();
 
-    Long insert(Item item);
+    Item insert(Item item);
 
     Item update(Item item);
 
