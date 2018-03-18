@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import models.model.Item;
 import models.persistence.ItemRepository;
 import play.libs.Json;
-import play.mvc.*;
+import play.mvc.Controller;
+import play.mvc.Result;
+import play.mvc.Results;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -23,6 +25,12 @@ public class ItemController extends Controller {
         this.repository = repository;
     }
 
+    /**
+     * Views a resource by its {@code id}.
+     *
+     * @param id The {@code id} of the resource to be viewed
+     * @return The resource corresponding to the given {@code id}
+     */
     public Result view(Long id) {
         Item item = repository.findOne(id);
         Optional<Item> o = Optional.ofNullable(item);
@@ -30,28 +38,51 @@ public class ItemController extends Controller {
         return o.map(i -> ok(Json.toJson(i))).orElseGet(Results::notFound);
     }
 
+    /**
+     * Lists all the available resources.
+     *
+     * @return The collection of all the available resources, or an empty
+     * collection if no resources exist
+     */
     public Result list() {
         List<Item> items = repository.findAll();
         return ok(Json.toJson(items));
     }
 
+    /**
+     * Create a new resource.
+     *
+     * @return The created resource
+     */
     public Result create() {
         JsonNode json = request().body().asJson();
         Item item = Json.fromJson(json, Item.class);
 
-        Long id = repository.insert(item);
-        return created(Json.toJson(id));
+        Item createdItem = repository.insert(item);
+        return created(Json.toJson(createdItem));
     }
 
+    /**
+     * Updates the whole resource with the given input parameters.
+     *
+     * @param id The {@code id} of the resource to be updated
+     * @return The updated resource
+     */
     public Result update(Long id) {
         JsonNode json = request().body().asJson();
         Item item = Json.fromJson(json, Item.class);
         item.setId(id);
 
-        Item updated = repository.update(item);
-        return ok(Json.toJson(updated));
+        Item updatedItem = repository.update(item);
+        return ok(Json.toJson(updatedItem));
     }
 
+    /**
+     * Partially modifies a resource according to the given parameters.
+     *
+     * @param id The {@code id} of the resource to be modified
+     * @return The modified resource
+     */
     public Result modify(Long id) {
         JsonNode json = request().body().asJson();
         Item item = Json.fromJson(json, Item.class);
@@ -60,15 +91,26 @@ public class ItemController extends Controller {
         Optional.ofNullable(item.getName()).ifPresent(existing::setName);
         Optional.ofNullable(item.getPrice()).ifPresent(existing::setPrice);
 
-        Item updated = repository.update(existing);
-        return ok(Json.toJson(updated));
+        Item updatedItem = repository.update(existing);
+        return ok(Json.toJson(updatedItem));
     }
 
+    /**
+     * Removes a resource by its {@code id}.
+     *
+     * @param id The {@code id} of the resource to be removed
+     * @return The {@code OK} HTTP status code
+     */
     public Result remove(Long id) {
         repository.delete(id);
         return ok();
     }
 
+    /**
+     * Removes all resources.
+     *
+     * @return The {@code OK} HTTP status code
+     */
     public Result removeAll() {
         repository.deleteAll();
         return ok();
