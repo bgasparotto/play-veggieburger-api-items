@@ -42,7 +42,7 @@ public enum DbUnitParameters {
 	 * @param value
 	 *            The constant value
 	 */
-	private DbUnitParameters(String value) {
+	DbUnitParameters(String value) {
 		this.value = value;
 	}
 
