@@ -17,6 +17,11 @@ public class Item {
      * Constructor.
      */
     public Item() {
+        this(null, "", BigDecimal.ZERO);
+    }
+
+    public Item(String name, BigDecimal price) {
+        this(null, name, price);
     }
 
     /**
