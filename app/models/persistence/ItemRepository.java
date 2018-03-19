@@ -19,9 +19,9 @@ public interface ItemRepository {
 
     Item update(Item item);
 
-    void delete(Long id);
+    int delete(Long id);
 
-    void delete(Item item);
+    int delete(Item item);
 
     void deleteAll();
 }

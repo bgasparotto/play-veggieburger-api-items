@@ -10,6 +10,7 @@ import play.mvc.Results;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -58,6 +59,11 @@ public class ItemController extends Controller {
         JsonNode json = request().body().asJson();
         Item item = Json.fromJson(json, Item.class);
 
+        if (Objects.nonNull(item.getId())) {
+            String message = "Resouce id must not be provided.";
+            return badRequest(Json.toJson(message));
+        }
+
         Item createdItem = repository.insert(item);
         return created(Json.toJson(createdItem));
     }
@@ -74,7 +80,8 @@ public class ItemController extends Controller {
         item.setId(id);
 
         Item updatedItem = repository.update(item);
-        return ok(Json.toJson(updatedItem));
+        Optional<Item> o = Optional.ofNullable(updatedItem);
+        return o.map(i -> ok(Json.toJson(i))).orElseGet(Results::notFound);
     }
 
     /**
@@ -87,6 +94,10 @@ public class ItemController extends Controller {
         JsonNode json = request().body().asJson();
         Item item = Json.fromJson(json, Item.class);
         Item existing = repository.findOne(id);
+
+        if (existing == null) {
+            return notFound();
+        }
 
         Optional.ofNullable(item.getName()).ifPresent(existing::setName);
         Optional.ofNullable(item.getPrice()).ifPresent(existing::setPrice);
@@ -102,7 +113,11 @@ public class ItemController extends Controller {
      * @return The {@code OK} HTTP status code
      */
     public Result remove(Long id) {
-        repository.delete(id);
+        int deletedResources = repository.delete(id);
+        if (deletedResources == 0) {
+            return notFound();
+        }
+
         return ok();
     }
 

@@ -47,23 +47,28 @@ public class JooqItemRepository extends JooqRepository implements ItemRepository
 
     @Override
     public Item update(Item item) {
-        create().update(ITEM)
+        int updatedRows = create().update(ITEM)
                 .set(ITEM.NAME, item.getName())
                 .set(ITEM.PRICE, item.getPrice())
                 .where(ITEM.ID.eq(item.getId()))
                 .execute();
 
+        if (updatedRows == 0) {
+            return null;
+        }
+
         return item;
     }
 
     @Override
-    public void delete(Long id) {
-        create().delete(ITEM).where(ITEM.ID.eq(id)).execute();
+    public int delete(Long id) {
+        int deletedRows = create().delete(ITEM).where(ITEM.ID.eq(id)).execute();
+        return deletedRows;
     }
 
     @Override
-    public void delete(Item item) {
-        delete(item.getId());
+    public int delete(Item item) {
+        return delete(item.getId());
     }
 
     @Override
