@@ -3,6 +3,8 @@ package models.persistence;
 import models.model.Item;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletionStage;
 
 /**
  * Contract for the repository of items.
@@ -11,17 +13,17 @@ import java.util.List;
  */
 public interface ItemRepository {
 
-    Item findOne(Long id);
+    CompletionStage<Optional<Item>> findOne(Long id);
 
-    List<Item> findAll();
+    CompletionStage<List<Item>> findAll();
 
-    Item insert(Item item);
+    CompletionStage<Item> insert(Item item);
 
-    Item update(Item item);
+    CompletionStage<Item> update(Item item);
 
-    int delete(Long id);
+    CompletionStage<Integer> delete(Long id);
 
-    int delete(Item item);
+    CompletionStage<Integer> delete(Item item);
 
-    void deleteAll();
+    CompletionStage<Integer> deleteAll();
 }
