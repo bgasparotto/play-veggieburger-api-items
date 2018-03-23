@@ -107,15 +107,17 @@ public class ItemController extends Controller {
         JsonNode json = request().body().asJson();
         Item item = Json.fromJson(json, Item.class);
 
-        return repository.findOne(id).thenApplyAsync(itemOptional -> {
-            itemOptional.map((existing) -> {
-                Optional.ofNullable(item.getName()).ifPresent(existing::setName);
-                Optional.ofNullable(item.getPrice()).ifPresent(existing::setPrice);
+        return repository.findOne(id)
+                .thenApplyAsync(itemOptional -> itemOptional.map(existing -> {
+                            Optional.ofNullable(item.getName())
+                                    .ifPresent(existing::setName);
+                            Optional.ofNullable(item.getPrice())
+                                    .ifPresent(existing::setPrice);
 
-                return repository.update(existing)
-                        .thenApplyAsync(updatedItem -> ok(Json.toJson(updatedItem)));
-            }).orElseGet(supplyAsync(() -> Results::notFound));
-        });
+                            repository.update(existing);
+                            return ok(Json.toJson(existing));
+                        }).orElseGet(Results::notFound),
+                        executionContext.current());
     }
 
     /**
@@ -125,12 +127,13 @@ public class ItemController extends Controller {
      * @return The {@code OK} HTTP status code
      */
     public CompletionStage<Result> remove(Long id) {
-        int deletedResources = repository.delete(id);
-        if (deletedResources == 0) {
-            return notFound();
-        }
+        return repository.delete(id).thenApplyAsync(deletedResources -> {
+            if (deletedResources == 0) {
+                return notFound();
+            }
 
-        return ok();
+            return ok();
+        }, executionContext.current());
     }
 
     /**
