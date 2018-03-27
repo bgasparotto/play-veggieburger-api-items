@@ -7,6 +7,8 @@ import org.junit.Before;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletionStage;
 
 public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
     private ItemRepository repository;
@@ -17,91 +19,122 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
         super.setUp();
     }
 
-    public void testShouldFindOne() {
-        Item item = repository.findOne(1L);
+    public void testShouldFindOne() throws Exception {
+        CompletionStage<Optional<Item>> result = repository.findOne(1L);
+        Optional<Item> itemOptional = result.toCompletableFuture().get();
+        Item item = itemOptional.get();
+
         Assert.assertNotNull(item);
         Assert.assertEquals(1L, item.getId().longValue());
     }
 
-    public void testShouldFindNullOnFindOnePassingNull() {
-        Item item = repository.findOne(null);
+    public void testShouldFindNullOnFindOnePassingNull() throws Exception {
+        CompletionStage<Optional<Item>> result = repository.findOne(null);
+        Optional<Item> itemOptional = result.toCompletableFuture().get();
+        Item item = itemOptional.get();
+
         Assert.assertNull(item);
     }
 
-    public void testShouldFindNullForNonExistingPositiveId() {
-        Item item = repository.findOne(100L);
+    public void testShouldFindNullForNonExistingPositiveId() throws Exception {
+        CompletionStage<Optional<Item>> result = repository.findOne(100L);
+        Optional<Item> itemOptional = result.toCompletableFuture().get();
+        Item item = itemOptional.get();
+
         Assert.assertNull(item);
     }
 
-    public void testShouldFindNullForNegativeAndZeroIds() {
-        Item forZero = repository.findOne(0L);
+    public void testShouldFindNullForNegativeAndZeroIds() throws Exception {
+        CompletionStage<Optional<Item>> result = repository.findOne(0L);
+        Optional<Item> itemOptional = result.toCompletableFuture().get();
+        Item forZero = itemOptional.get();
+
         Assert.assertNull(forZero);
 
-        Item forMinusOne = repository.findOne(-1L);
+        result = repository.findOne(-1L);
+        itemOptional = result.toCompletableFuture().get();
+        Item forMinusOne = itemOptional.get();
+
         Assert.assertNull(forMinusOne);
     }
 
-    public void testShouldFindAll() {
-        List<Item> items = repository.findAll();
+    public void testShouldFindAll() throws Exception {
+        CompletionStage<List<Item>> result = repository.findAll();
+        List<Item> items = result.toCompletableFuture().get();
         Assert.assertEquals(5, items.size());
     }
 
-    public void testShouldFindEmptyListWhenNoRecords() {
-        repository.deleteAll();
-        List<Item> items = repository.findAll();
+    public void testShouldFindEmptyListWhenNoRecords() throws Exception {
+        repository.deleteAll().toCompletableFuture().get();
+        CompletionStage<List<Item>> result = repository.findAll();
+        List<Item> items = result.toCompletableFuture().get();
 
         Assert.assertNotNull(items);
         Assert.assertEquals(0, items.size());
     }
 
-    public void testShouldInsert() {
+    public void testShouldInsert() throws Exception {
         Item item = new Item(null, "New Burger", new BigDecimal(9));
-        Item createdItem = repository.insert(item);
+        CompletionStage<Item> result = repository.insert(item);
+        Item createdItem = result.toCompletableFuture().get();
+
         Assert.assertEquals(6L, createdItem.getId().longValue());
 
-        List<Item> items = repository.findAll();
+        CompletionStage<List<Item>> findResult = repository.findAll();
+        List<Item> items = findResult.toCompletableFuture().get();
         Assert.assertEquals(6, items.size());
     }
 
-    public void testShouldUpdate() {
+    public void testShouldUpdate() throws Exception {
         Long updatingId = 1L;
         String newName = "New Expensive Burger";
         BigDecimal newPrice = new BigDecimal(99.00);
         Item item = new Item(updatingId, newName, newPrice);
-        repository.update(item);
+        repository.update(item).toCompletableFuture().get();
 
-        Item updated = repository.findOne(updatingId);
+        CompletionStage<Optional<Item>> result = repository.findOne(updatingId);
+        Optional<Item> itemOptional = result.toCompletableFuture().get();
+        Item updated = itemOptional.get();
+
         Assert.assertEquals(newName, updated.getName());
         Assert.assertEquals(newPrice.doubleValue(), updated.getPrice().doubleValue(), 2);
     }
 
-    public void testShouldDeleteById() {
+    public void testShouldDeleteById() throws Exception {
         Long deletingId = 5L;
-        repository.delete(deletingId);
+        repository.delete(deletingId).toCompletableFuture().get();
 
-        Item item = repository.findOne(deletingId);
+        CompletionStage<Optional<Item>> result = repository.findOne(deletingId);
+        Optional<Item> itemOptional = result.toCompletableFuture().get();
+        Item item = itemOptional.get();
+
         Assert.assertNull(item);
 
-        List<Item> items = repository.findAll();
+        CompletionStage<List<Item>> findResult = repository.findAll();
+        List<Item> items = findResult.toCompletableFuture().get();
         Assert.assertEquals(4, items.size());
     }
 
-    public void testShouldDeleteItem() {
+    public void testShouldDeleteItem() throws Exception {
         Long deletingId = 5L;
         Item deletingItem = new Item();
         deletingItem.setId(deletingId);
-        repository.delete(deletingItem);
+        repository.delete(deletingItem).toCompletableFuture().get();
 
-        Item item = repository.findOne(deletingId);
+        CompletionStage<Optional<Item>> result = repository.findOne(deletingId);
+        Optional<Item> itemOptional = result.toCompletableFuture().get();
+        Item item = itemOptional.get();
         Assert.assertNull(item);
 
-        List<Item> items = repository.findAll();
+        CompletionStage<List<Item>> findResult = repository.findAll();
+        List<Item> items = findResult.toCompletableFuture().get();
         Assert.assertEquals(4, items.size());
     }
 
-    public void testShouldDeleteAll() {
-        repository.deleteAll();
-        List<Item> items = repository.findAll();
+    public void testShouldDeleteAll() throws Exception {
+        repository.deleteAll().toCompletableFuture().get();
+        CompletionStage<List<Item>> findResult = repository.findAll();
+        List<Item> items = findResult.toCompletableFuture().get();
         Assert.assertEquals(0, items.size());
     }
 }
