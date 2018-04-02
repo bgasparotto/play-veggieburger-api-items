@@ -22,7 +22,7 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
     public void testShouldFindOne() throws Exception {
         CompletionStage<Optional<Item>> result = repository.findOne(1L);
         Optional<Item> itemOptional = result.toCompletableFuture().get();
-        Item item = itemOptional.get();
+        Item item = itemOptional.orElse(null);
 
         Assert.assertNotNull(item);
         Assert.assertEquals(1L, item.getId().longValue());
@@ -94,8 +94,9 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
 
         CompletionStage<Optional<Item>> result = repository.findOne(updatingId);
         Optional<Item> itemOptional = result.toCompletableFuture().get();
-        Item updated = itemOptional.get();
+        Item updated = itemOptional.orElse(null);
 
+        Assert.assertNotNull(updated);
         Assert.assertEquals(newName, updated.getName());
         Assert.assertEquals(newPrice.doubleValue(), updated.getPrice().doubleValue(), 2);
     }
