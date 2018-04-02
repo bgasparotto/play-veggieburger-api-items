@@ -31,7 +31,7 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
     public void testShouldFindNullOnFindOnePassingNull() throws Exception {
         CompletionStage<Optional<Item>> result = repository.findOne(null);
         Optional<Item> itemOptional = result.toCompletableFuture().get();
-        Item item = itemOptional.get();
+        Item item = itemOptional.orElse(null);
 
         Assert.assertNull(item);
     }
@@ -39,7 +39,7 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
     public void testShouldFindNullForNonExistingPositiveId() throws Exception {
         CompletionStage<Optional<Item>> result = repository.findOne(100L);
         Optional<Item> itemOptional = result.toCompletableFuture().get();
-        Item item = itemOptional.get();
+        Item item = itemOptional.orElse(null);
 
         Assert.assertNull(item);
     }
@@ -47,13 +47,13 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
     public void testShouldFindNullForNegativeAndZeroIds() throws Exception {
         CompletionStage<Optional<Item>> result = repository.findOne(0L);
         Optional<Item> itemOptional = result.toCompletableFuture().get();
-        Item forZero = itemOptional.get();
+        Item forZero = itemOptional.orElse(null);
 
         Assert.assertNull(forZero);
 
         result = repository.findOne(-1L);
         itemOptional = result.toCompletableFuture().get();
-        Item forMinusOne = itemOptional.get();
+        Item forMinusOne = itemOptional.orElse(null);
 
         Assert.assertNull(forMinusOne);
     }
@@ -106,7 +106,7 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
 
         CompletionStage<Optional<Item>> result = repository.findOne(deletingId);
         Optional<Item> itemOptional = result.toCompletableFuture().get();
-        Item item = itemOptional.get();
+        Item item = itemOptional.orElse(null);
 
         Assert.assertNull(item);
 
@@ -123,7 +123,7 @@ public class JooqItemRepositoryTest extends PlayDbUnitTestCase {
 
         CompletionStage<Optional<Item>> result = repository.findOne(deletingId);
         Optional<Item> itemOptional = result.toCompletableFuture().get();
-        Item item = itemOptional.get();
+        Item item = itemOptional.orElse(null);
         Assert.assertNull(item);
 
         CompletionStage<List<Item>> findResult = repository.findAll();
